@@ -1,46 +1,4 @@
-Dialog.create("Arrange Channels");
-	Dialog.addNumber("how many channels initially",0,0,1,"channel/s");
-	Dialog.addNumber("how many channels in final image",0,0,1,"channel/s");
-Dialog.show();
-numChan = Dialog.getNumber();
-finChan = Dialog.getNumber();
-print(numChan);
-Dialog.create("what colors\nare the channels");
-	channels = newArray("Green","Red","Blue","Cyan");
-	for(n=0;n<numChan;n++){
-		Dialog.addChoice("color",channels);
-	}
-Dialog.show();
-chanArray = newArray();
-for(n=0;n<numChan;n++) {
-	chanArray = Array.concat(chanArray,Dialog.getChoice());
-	Array.print(chanArray);
-}
-	
-Dialog.create("Arrange Channels");
-	string = "Current Channels\n";
-	for(n=0;n<numChan;n++) {
-		string = string+" "+(n+1)+"-"+chanArray[n]+"\n";
-	}
-	Dialog.addMessage(string);
-	finArray = newArray();
-	colArray = newArray();
-	for(n=0;n<finChan;n++) {
-		Dialog.setInsets(20,0,0);
-		Dialog.addNumber("Change to channel "+(n+1),(n+1),0,1,"");
-		Dialog.setInsets(0,0,0);
-		Dialog.addRadioButtonGroup("New channel color",chanArray,1,numChan,"Green");
-	}
-Dialog.show();
-c="";
-for(n=0;n<finChan;n++) {
-	finArray = Array.concat(finArray,Dialog.getNumber());
-	colArray = Array.concat(colArray,Dialog.getRadioButton());
-	c=c+d2s(finArray[n],0);
-}
-Array.print(finArray);
-Array.print(colArray);
-print(c);
+ArrangeChan();
 imagedir = getDirectory("Folder for a copy of the modified image");
 for(i=nImages;i>0;i--){
 	selectImage(nImages);
@@ -54,4 +12,43 @@ for(i=nImages;i>0;i--){
 	saveAs("Tiff",imagedir+title+"_copy");
 	close();
 }
+function ArrangeChan() {
+	Dialog.create("Arrange Channels");
+		Dialog.addNumber("how many channels initially",0,0,1,"channel/s");
+		Dialog.addNumber("how many channels in final image",0,0,1,"channel/s");
+	Dialog.show();
+	numChan = Dialog.getNumber();
+	finChan = Dialog.getNumber();
+	Dialog.create("what colors\nare the channels");
+		channels = newArray("Green","Red","Blue","Cyan");
+		for(n=0;n<numChan;n++){
+			Dialog.addChoice("color",channels);
+		}
+	Dialog.show();
+	chanArray = newArray();
+	for(n=0;n<numChan;n++) {
+		chanArray = Array.concat(chanArray,Dialog.getChoice());
+	}
+	
+	Dialog.create("Arrange Channels");
+		string = "Current Channels\n";
+		for(n=0;n<numChan;n++) {
+			string = string+" "+(n+1)+"-"+chanArray[n]+"\n";
+		}
+		Dialog.addMessage(string);
+		finArray = newArray();
+		colArray = newArray();
+		for(n=0;n<finChan;n++) {
+			Dialog.setInsets(20,0,0);
+			Dialog.addNumber("Change to channel "+(n+1),(n+1),0,1,"");
+			Dialog.setInsets(0,0,0);
+			Dialog.addRadioButtonGroup("New channel color",chanArray,1,numChan,"Green");
+		}
+	Dialog.show();
+	c="";
+	for(n=0;n<finChan;n++) {
+		finArray = Array.concat(finArray,Dialog.getNumber());
+		colArray = Array.concat(colArray,Dialog.getRadioButton());
+		c=c+d2s(finArray[n],0);
+	}
 
