@@ -1,0 +1,2 @@
+# ModifyChannels
+I wanted to make a macro that would allow you to change large, inconsistently constructed, groups of images in the same way using the same macro. For example, I have a four channel image (Cyan, Blue, Green, Red) that I want to be a three channel image (Green, Red, Blue), but the blue channel is supposed to be green, the red is supposed to be blue, and the green is supposed to be red. This should do that.
