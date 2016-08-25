@@ -1,0 +1,92 @@
+var c, s, i, imagedir, title, numChan, finChan, flat, colArray, chanArray, channels,ztack;
+var channels, stacks, channel1, channel2, channel3, channel4, colors, title, newTitle;
+imagedir = getDirectory("Folder for images");
+ArrangeandStackChan();
+for(i=nImages;i>0;i--){
+	selectImage(nImages);
+	title = getTitle();
+	Dialog.create("Title");
+		Dialog.addMessage("Rename");
+		Dialog.addString("", title,50);
+		Dialog.show();
+	newTitle = Dialog.getString();
+	rename(newTitle);
+	title=getTitle();
+	selectWindow(title);
+	run("Arrange Channels...", "new="+c);
+	rename("close_me");
+	if(ztack == true) {
+		run("Z Project...", "projection=[Max Intensity]");
+		selectWindow("close_me");
+		close();
+	}
+	else {
+		selectWindow("close_me");
+		rename("MAX_close_me");
+	}
+	selectImage("MAX_close_me");
+	for(s=0;s<nSlices;s++) {
+		setSlice(s+1);
+		run(colArray[s]);
+	}
+	selectImage("MAX_close_me");
+	saveAs("Tiff",imagedir+title);
+	if (flat == "yes") {
+		selectImage(title+".tif");
+		run("Stack to RGB");
+		selectImage(title+".tif (RGB)");
+		saveAs("Tiff",imagedir+title+"_flat");
+		close();
+		selectImage(title);
+		close();
+	} else {
+		selectImage(title);
+		close();
+	}
+}
+function ArrangeandStackChan() {
+	Dialog.create("Arrange Channels");
+		Dialog.addNumber("how many channels initially",0,0,1,"channel/s");
+		Dialog.addNumber("how many channels in final image",0,0,1,"channel/s");
+		Dialog.addString("RGB?","yes");
+		Dialog.setInsets(0,200,0);
+		Dialog.addCheckbox("Z-stack",true);
+	Dialog.show();
+	numChan = Dialog.getNumber();
+	finChan = Dialog.getNumber();
+	flat = Dialog.getString();
+	ztack = Dialog.getCheckbox();
+	Dialog.create("what colors\nare the channels");
+		channels = newArray("Green","Red","Blue","Cyan");
+		for(n=0;n<numChan;n++){
+			Dialog.addChoice("color",channels);
+		}
+	Dialog.show();
+	chanArray = newArray();
+	for(n=0;n<numChan;n++) {
+		chanArray = Array.concat(chanArray,Dialog.getChoice());
+	}
+	
+	Dialog.create("Arrange Channels");
+		string = "Current Channels\n";
+		for(n=0;n<numChan;n++) {
+			string = string+" "+(n+1)+"-"+chanArray[n]+"\n";
+		}
+		Dialog.addMessage(string);
+		finArray = newArray();
+		colArray = newArray();
+		for(n=0;n<finChan;n++) {
+			Dialog.setInsets(20,0,0);
+			Dialog.addNumber("Change to channel "+(n+1),(n+1),0,1,"");
+			Dialog.setInsets(0,0,0);
+			Dialog.addRadioButtonGroup("New channel color",chanArray,1,numChan,"Green");
+		}
+	Dialog.show();
+	c="";
+	for(n=0;n<finChan;n++) {
+		finArray = Array.concat(finArray,Dialog.getNumber());
+		colArray = Array.concat(colArray,Dialog.getRadioButton());
+		c=c+d2s(finArray[n],0);
+	}
+}
+
