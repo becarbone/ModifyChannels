@@ -7,7 +7,7 @@ for(i=nImages;i>0;i--){
 	title = getTitle();
 	Dialog.create("Title");
 		Dialog.addMessage("Rename");
-		Dialog.addString("", title+namen,50);
+		Dialog.addString("",title+namen,50);
 		Dialog.show();
 	newTitle = Dialog.getString();
 	rename(newTitle);
@@ -61,7 +61,7 @@ function ArrangeandStackChan() {
 	Dialog.create("what colors\nare the channels");
 		channels = newArray("Green","Red","Blue","Cyan");
 		for(n=0;n<numChan;n++){
-			Dialog.addChoice("color",channels);
+			Dialog.addChoice("color",channels,channels[n]);
 		}
 	Dialog.show();
 	chanArray = newArray();
@@ -91,4 +91,3 @@ function ArrangeandStackChan() {
 		c=c+d2s(finArray[n],0);
 	}
 }
-
