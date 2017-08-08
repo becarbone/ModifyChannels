@@ -3,7 +3,7 @@ var namen, channels, stacks, channel1, channel2, channel3, channel4, colors, tit
 var settings, henny;
 imagedir = getDirectory("Folder for images");
 Dialog.create("presets");
-	settings = newArray("co-culture","normal E18","custom");
+	settings = newArray("co-culture","normal E18","a-synuclein project","custom");
 	Dialog.addChoice("Which setting?",settings);
 Dialog.show;
 henny = Dialog.getChoice();
@@ -24,6 +24,17 @@ else if (henny == "normal E18") {
 	ztack = true;
 	c = "123";
 	colArray = newArray("Green","Red","Blue");
+}
+
+if(henny == "a-synuclein project") {
+	run("Properties...", "channels=4 slices=6 frames=1 unit=micron pixel_width=0.1803752 pixel_height=0.1803752 voxel_depth=0.2891800");
+	numChan = 4;
+	finChan = 4;
+	flat = "no";
+	namen = "";
+	ztack = true;
+	c = "1234";
+	colArray = newArray("Cyan","Blue","Green","Red");
 }
 else if (henny == "custom")	{
 	Dialog.create("Arrange Channels");
